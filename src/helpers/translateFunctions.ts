@@ -59,14 +59,12 @@ export const functions = {
     return index
   },
 
-  tfidf: function (TFObj: any, IDFObj: any, dataset: any) {
+  tfidf: function (TFObj: any, IDFObj: any) {
     const index: any = {}
 
     for (const word in TFObj) {
       if (IDFObj[word]) {
         index[word] = TFObj[word] * IDFObj[word]
-      } else if (!dataset.index[word]) {
-        index[word] = TFObj[word] * dataset.numberOfDocs
       }
     }
 

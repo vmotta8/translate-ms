@@ -2,11 +2,6 @@ import { functions } from '../translateFunctions'
 
 describe('term frequency - inverse document frequency', () => {
   it('should return an object with the words and their tfidf', () => {
-    const dataset = {
-      index: { give: 4, have: 10, head: 5, lame: 6, maybe: 7, name: 10, only: 10, remember: 10, should: 10, slippery: 2, slope: 3, that: 10 },
-      numberOfDocs: 100
-    }
-
     const TFObj = {
       give: 0.07692307692307693,
       have: 0.07692307692307693,
@@ -31,7 +26,7 @@ describe('term frequency - inverse document frequency', () => {
       slope: 1.5228787452803376
     }
 
-    const result = functions.tfidf(TFObj, IDFObj, dataset)
+    const result = functions.tfidf(TFObj, IDFObj)
     expect(result).toEqual({
       give: 0.10753384682092598,
       head: 0.10007923043569088,
