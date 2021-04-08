@@ -1,4 +1,4 @@
-import { ICacheProvider } from '../../../src/lib/providers/ICacheProvider'
+import { ICacheProvider } from '../ICacheProvider'
 
 export class RedisProviderInMemory implements ICacheProvider {
   async get (name: string): Promise<any> {
