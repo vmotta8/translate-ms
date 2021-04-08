@@ -1,13 +1,12 @@
 import axios from 'axios'
 import createError from 'http-errors'
 import { functions } from '../../helpers/translateFunctions'
-// const words: any = require('../../../dataset/ww.json')
-const words: any = { index: { "don't": 15339 } }
 
 export class TranslateService {
   async execute (url: string) {
     const formattedUrl = url.split('%2F').join('/')
     try {
+      const words = (await axios.get('https://raw.githubusercontent.com/vmotta8/translate-ms/master/dataset/ww.json')).data
       const subtitle = (await axios.get(formattedUrl)).data
       const subtitleWordsArray = functions.stringToArray(subtitle, 3)
       const subtitleWordsCounted = functions.countWords(subtitleWordsArray)
