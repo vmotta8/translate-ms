@@ -1,9 +1,12 @@
 import { APIGatewayProxyResult } from 'aws-lambda'
 import { commonMiddleware } from '../lib/middlewares/commonMiddleware'
 import { TranslateService } from './services/translateService'
+import { RedisProvider } from '../lib/providers/implementations/RedisProvider'
 import createError from 'http-errors'
 
-const translateService = new TranslateService()
+const translateService = new TranslateService(
+  new RedisProvider()
+)
 
 async function translate (event: any, context: any): Promise<APIGatewayProxyResult> {
   const { url } = event.pathParameters

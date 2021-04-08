@@ -11,6 +11,10 @@ provider:
   memorySize: 512
   stage: ${opt:stage, 'dev'}
   region: eu-west-1
+  environment:
+    REDIS_PORT: ${self:custom.Redis.port}
+    REDIS_HOST: ${self:custom.Redis.host}
+    REDIS_PASSWORD: ${self:custom.Redis.password}
   
 functions:
   translate:
@@ -22,5 +26,9 @@ functions:
           path: /translate/{url}
     
 custom:
+  Redis:
+    port: ${file(env.yml):Redis.port}
+    host: ${file(env.yml):Redis.host}
+    password: ${file(env.yml):Redis.password}
   bundle:
     linting: false
