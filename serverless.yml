@@ -10,15 +10,17 @@ provider:
   runtime: nodejs12.x
   memorySize: 256
   stage: ${opt:stage, 'dev'}
+  region: eu-west-1
   
 functions:
-  hello:
-    handler: dist/handlers/hello.handler
+  translate:
+    handler: dist/handlers/translate.handler
+    timeout: 45
     events:
       - http:
           method: GET
-          path: /hello
-
+          path: /translate/{url}
+    
 custom:
   bundle:
     linting: false
