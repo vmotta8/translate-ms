@@ -64,7 +64,9 @@ export const functions = {
 
     for (const word in TFObj) {
       if (IDFObj[word]) {
-        index[word] = TFObj[word] * IDFObj[word]
+        if (IDFObj[word] > 1) {
+          index[word] = TFObj[word] * IDFObj[word]
+        }
       }
     }
 
