@@ -3,16 +3,16 @@ const tr = require('googletrans')
 const translate = tr.default
 
 export const functions = {
-  stringToArray: function (str: any, wordsMinimumLength: any) {
-    const strWordsArray = str.match(/[a-zA-Z'áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+/g)
+  stringToArray: function (str: string, wordsMinimumLength: number): string[] {
+    const strWordsArray = str.match(/[a-zA-Z'áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+/g)!
 
     const index = []
     for (const word of strWordsArray) {
-      const replaced = word.replace(/[']+/g, '')
       const lower = word.toLocaleLowerCase()
 
-      if (word.length > wordsMinimumLength && replaced === word && word === lower) {
-        index.push(word)
+      if (word.length > wordsMinimumLength && word === lower) {
+        const replaced = word.replace(/[']+/g, '')
+        index.push(replaced)
       }
     }
 
