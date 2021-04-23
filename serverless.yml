@@ -19,7 +19,7 @@ provider:
 functions:
   translate:
     handler: dist/handlers/translate.handler
-    timeout: 45
+    timeout: 10
     events:
       - http:
           method: GET
