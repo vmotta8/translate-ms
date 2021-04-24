@@ -19,8 +19,8 @@ export const functions = {
     return index
   },
 
-  countWords: function (wordsArray: any) {
-    const index: any = {}
+  countWords: function (wordsArray: string[]): {[x: string]: number} {
+    const index: {[x: string]: number} = {}
 
     wordsArray.forEach(function (word: any) {
       if (!(index.hasOwnProperty(word))) {
@@ -32,18 +32,12 @@ export const functions = {
     return index
   },
 
-  tf: function (wordsCountedObj: any) {
-    let sum = 0
-    for (const word in wordsCountedObj) {
-      sum += wordsCountedObj[word]
-    }
+  tf: function (wordsCountedObj: {[x: string]: number}): {[x: string]: number} {
+    const sum = Object.keys(wordsCountedObj).length
 
-    const index: any = {}
-    for (const word in wordsCountedObj) {
-      index[word] = (wordsCountedObj[word]) / sum
-    }
+    Object.keys(wordsCountedObj).forEach(function (key) { wordsCountedObj[key] /= sum })
 
-    return index
+    return wordsCountedObj
   },
 
   idf: function (wordsNumberOfOccurrencesObj: any, numberOfDocs: any) {
@@ -59,14 +53,12 @@ export const functions = {
     return index
   },
 
-  tfidf: function (TFObj: any, IDFObj: any) {
-    const index: any = {}
+  tfidf: function (TFObj: {[x: string]: number}, IDFObj: {[x: string]: number}) {
+    const index: {[x: string]: number} = {}
 
     for (const word in TFObj) {
-      if (IDFObj[word]) {
-        if (IDFObj[word] > 1) {
-          index[word] = TFObj[word] * IDFObj[word]
-        }
+      if (IDFObj[word] > 1) {
+        index[word] = TFObj[word] * IDFObj[word]
       }
     }
 
