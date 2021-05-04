@@ -22,7 +22,7 @@ export const functions = {
   countWords: function (wordsArray: string[]): {[x: string]: number} {
     const index: {[x: string]: number} = {}
 
-    wordsArray.forEach(function (word: any) {
+    wordsArray.forEach(function (word: string) {
       if (!(index.hasOwnProperty(word))) {
         index[word] = 0
       }
@@ -40,6 +40,7 @@ export const functions = {
     return wordsCountedObj
   },
 
+  /* Deprecated - idf is already included in words dataset */
   idf: function (wordsNumberOfOccurrencesObj: any, numberOfDocs: any) {
     const index: any = {}
 
@@ -53,58 +54,53 @@ export const functions = {
     return index
   },
 
-  tfidf: function (TFObj: {[x: string]: number}, IDFObj: {[x: string]: number}) {
+  tfidf: function (TFObj: {[x: string]: number}, IDFObj: {[x: string]: number}): {[x: string]: number} {
     const index: {[x: string]: number} = {}
 
-    for (const word in TFObj) {
-      if (IDFObj[word] > 1) {
-        index[word] = TFObj[word] * IDFObj[word]
-      }
-    }
+    Object.keys(TFObj).forEach(function (key) { IDFObj[key] > 1 ? index[key] = TFObj[key] * IDFObj[key] : index[key] = 0 })
 
     return index
   },
 
-  sortable: function (obj: any, numberOfWords: any) {
-    const index = []
-    for (const vehicle in obj) {
-      index.push([vehicle, obj[vehicle]])
-    }
+  sortable: function (TFIDFObj: {[x: string]: number}, numberOfWords: number): string[] {
+    const index: [x:string, y: number][] = []
 
-    index.sort(function (a, b) {
+    Object.keys(TFIDFObj).forEach((word: string) => {
+      index.push([word, TFIDFObj[word]])
+    })
+
+    index.sort(function (a: any, b: any) {
       return b[1] - a[1]
     })
 
-    return index.slice(0, numberOfWords)
+    const sorted = index.slice(0, numberOfWords)
+
+    const wordsArray = sorted.map(item => {
+      return item[0]
+    })
+
+    return wordsArray
   },
 
-  translateArrayOfWords: async function (wordsObj: any, from: any, to: any) {
-    const wordsArray = []
-    for (const obj of wordsObj) {
-      wordsArray.push(obj[0])
-    }
+  translateArrayOfWords: async function (wordsArray: string[], from: string, to: string): Promise<{[x: string]: string}> {
+    const translated = await (translate(wordsArray.join('. '), { from: from, to: to }))
+    const translatedArray = (translated.text).split('. ').map((word: string) => {
+      return word.toLocaleLowerCase().replace(/[.':%]+/g, '')
+    })
 
-    const wordsStr = wordsArray.join('. ')
+    const mergedObj: {[x: string]: string} = {}
+    wordsArray.forEach((item: any, index: any) => {
+      mergedObj[item] = translatedArray[index]
+    })
 
-    const translated = await (translate(wordsStr, { from: from, to: to }))
-    const translatedArray = (translated.text).split('. ')
-
-    const index: any = {}
-    for (let i = 0; i < translatedArray.length; i++) {
-      const translatedWord = translatedArray[i].toLocaleLowerCase().replace(/[.':%]+/g, '')
-      if (translatedWord !== wordsArray[i]) {
-        index[wordsArray[i]] = translatedWord
-      }
-    }
-
-    return index
+    return mergedObj
   },
 
-  addTranslatedWordsToSubtitle: function (subtitle: any, translatedWords: any) {
-    for (const word in translatedWords) {
+  addTranslatedWordsToSubtitle: function (subtitle: any, translatedWords: {[x: string]: string}) {
+    Object.keys(translatedWords).forEach((word: string) => {
       const reg = new RegExp(` ${word} `, 'g')
       subtitle = subtitle.replace(reg, ` ${word}(${translatedWords[word]}) `)
-    }
+    })
 
     return subtitle
   }
