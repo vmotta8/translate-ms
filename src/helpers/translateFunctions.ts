@@ -96,7 +96,7 @@ export const functions = {
     return mergedObj
   },
 
-  addTranslatedWordsToSubtitle: function (subtitle: any, translatedWords: {[x: string]: string}) {
+  addTranslatedWordsToSubtitle: function (subtitle: string, translatedWords: {[x: string]: string}): string {
     Object.keys(translatedWords).forEach((word: string) => {
       const reg = new RegExp(` ${word} `, 'g')
       subtitle = subtitle.replace(reg, ` ${word}(${translatedWords[word]}) `)

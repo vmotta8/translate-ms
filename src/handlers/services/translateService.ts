@@ -39,7 +39,7 @@ export class TranslateService {
       return newSubtitle
     } catch (err) {
       console.log(err)
-      throw new createError.BadGateway(err)
+      throw new createError.InternalServerError(err)
     }
   }
 }
