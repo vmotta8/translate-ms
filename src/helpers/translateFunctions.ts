@@ -57,7 +57,7 @@ export const functions = {
   tfidf: function (TFObj: {[x: string]: number}, IDFObj: {[x: string]: number}): {[x: string]: number} {
     const index: {[x: string]: number} = {}
 
-    Object.keys(TFObj).forEach(function (key) { IDFObj[key] > 1 ? index[key] = TFObj[key] * IDFObj[key] : index[key] = 0 })
+    Object.keys(TFObj).forEach(function (key) { if (IDFObj[key] > 1) index[key] = TFObj[key] * IDFObj[key] })
 
     return index
   },
