@@ -29,17 +29,11 @@ describe('term frequency - inverse document frequency', () => {
     const result = functions.tfidf(TFObj, IDFObj)
     expect(result).toEqual({
       give: 0.10753384682092598,
-      have: 0,
       head: 0.10007923043569088,
       lame: 0.09398836535510434,
       maybe: 0.08883861230659562,
-      name: 0,
-      only: 0,
-      remember: 0,
-      should: 0,
       slippery: 0.13069000033353992,
-      slope: 0.11714451886771829,
-      that: 0
+      slope: 0.11714451886771829
     })
   })
 })
